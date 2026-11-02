@@ -70,7 +70,23 @@ class AppCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: app.accentColor.withValues(alpha: 0.3)),
                 ),
-                child: Icon(app.icon, color: app.accentColor, size: 28),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(7),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0), // Inset padding for the icon
+                    child: Image.asset(
+                      app.icon,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Icon(
+                          Icons.apps_rounded,
+                          color: app.accentColor,
+                          size: 28,
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -96,9 +112,9 @@ class AppCard extends StatelessWidget {
                             border: Border.all(color: AppColors.badgeText.withValues(alpha: 0.4)),
                             borderRadius: BorderRadius.circular(3),
                           ),
-                          child: Text(
-                            app.publisher,
-                            style: const TextStyle(
+                          child: const Text(
+                            "By Alien_",
+                            style: TextStyle(
                               fontFamily: AppFonts.digital,
                               fontSize: 9,
                               color: AppColors.badgeText,

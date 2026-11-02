@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:install_plugin/install_plugin.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/alien_apps.dart';
@@ -18,12 +18,22 @@ class StoreState {
   final String searchQuery;
   final String sortMode;
   final bool isLoading;
+  final bool isSelfUpdateAvailable;
+  final String? selfLatestVersion;
+  final String? selfDownloadUrl;
+  final bool isSelfUpdating;
+  final double selfUpdateProgress;
 
   StoreState({
     required this.apps,
     this.searchQuery = '',
     this.sortMode = 'Name (A–Z)',
     this.isLoading = false,
+    this.isSelfUpdateAvailable = false,
+    this.selfLatestVersion,
+    this.selfDownloadUrl,
+    this.isSelfUpdating = false,
+    this.selfUpdateProgress = 0.0,
   });
 
   StoreState copyWith({
@@ -31,17 +41,29 @@ class StoreState {
     String? searchQuery,
     String? sortMode,
     bool? isLoading,
+    bool? isSelfUpdateAvailable,
+    String? selfLatestVersion,
+    String? selfDownloadUrl,
+    bool? isSelfUpdating,
+    double? selfUpdateProgress,
   }) {
     return StoreState(
       apps: apps ?? this.apps,
       searchQuery: searchQuery ?? this.searchQuery,
       sortMode: sortMode ?? this.sortMode,
       isLoading: isLoading ?? this.isLoading,
+      isSelfUpdateAvailable: isSelfUpdateAvailable ?? this.isSelfUpdateAvailable,
+      selfLatestVersion: selfLatestVersion ?? this.selfLatestVersion,
+      selfDownloadUrl: selfDownloadUrl ?? this.selfDownloadUrl,
+      isSelfUpdating: isSelfUpdating ?? this.isSelfUpdating,
+      selfUpdateProgress: selfUpdateProgress ?? this.selfUpdateProgress,
     );
   }
 }
 
 class StoreNotifier extends StateNotifier<StoreState> {
+  static const String _githubRepo = 'Abhinav08bhatt/alien_';
+
   StoreNotifier() : super(StoreState(apps: _initialData)) {
     refreshInstalledStatus();
   }
@@ -50,91 +72,202 @@ class StoreNotifier extends StateNotifier<StoreState> {
     const CraftApp(
       id: 'music',
       packageName: 'com.alien.music_',
-      name: 'SoundCraft',
+      name: 'music',
       tagLine: 'Recording, editing and mixing audio',
       description: 'Record, edit and mix your audio. Built for speed and custom workflow.',
-      version: 'V0.16.0',
-      versionCode: 16,
-      lastUpdated: 'Nov 2, 2026',
+      version: 'v0.0.1',
+      versionCode: 1,
+      lastUpdated: 'Recently',
       githubUrl: 'https://github.com/Abhinav08bhatt/alien_',
-      apkDownloadUrl: 'https://github.com/Abhinav08bhatt/alien_/releases/download/v0.0.1/music_.apk',
+      apkDownloadUrl: '',
       accentColor: Color(0xFF0095FF),
-      icon: Icons.graphic_eq_rounded,
+      icon: 'assets/icons/music_.png',
+      tagPrefix: 'musicv', // Matches: musicv0.0.1, musicv0.0.2, etc.
     ),
-  //   const CraftApp(
-  //     id: 'movie',
-  //     packageName: 'com.artcraft.movies',
-  //     name: 'FilmCraft',
-  //     tagLine: 'Video curation, color and sound',
-  //     description: 'Professional video editing and movie recommendation system.',
-  //     version: 'V0.20.0',
-  //     versionCode: 20,
-  //     lastUpdated: 'Nov 2, 2026',
-  //     githubUrl: 'https://github.com',
-  //     apkDownloadUrl: 'https://github.com',
-  //     accentColor: Color(0xFFFF4081),
-  //     icon: Icons.movie_creation_outlined,
-  //   ),
-  //   const CraftApp(
-  //     id: 'design',
-  //     packageName: 'com.artcraft.design',
-  //     name: 'DesignCraft',
-  //     tagLine: 'Page layout and publishing',
-  //     description: 'Layout your ideas, print ready posters and graphic suites.',
-  //     version: 'V0.16.0',
-  //     versionCode: 16,
-  //     lastUpdated: 'Nov 2, 2026',
-  //     githubUrl: 'https://github.com',
-  //     accentColor: Color(0xFF69F0AE),
-  //     icon: Icons.auto_awesome_mosaic_outlined,
-  //     apkDownloadUrl: 'https://github.com',
-  //   ),
-  //   const CraftApp(
-  //     id: 'light',
-  //     packageName: 'com.artcraft.photo',
-  //     name: 'LightCraft',
-  //     tagLine: 'Photo library and raw development',
-  //     description: 'Your photos. Your pixels. Your machine. Zero cloud dependency.',
-  //     version: 'V0.17.0',
-  //     versionCode: 17,
-  //     lastUpdated: 'Nov 2, 2026',
-  //     githubUrl: 'https://github.com',
-  //     accentColor: Color(0xFFFFAB00),
-  //     icon: Icons.photo_filter_rounded,
-  //     apkDownloadUrl: 'https://github.com',
-  //   ),
   ];
 
+  /// Checks both the Launcher's own update AND all apps' updates from GitHub
   Future<void> refreshInstalledStatus() async {
     state = state.copyWith(isLoading: true);
-    final List<CraftApp> updated = [];
 
-    for (final app in state.apps) {
-      try {
-        final AppInfo? info = await InstalledApps.getAppInfo(app.packageName);
-        if (info == null) {
-          updated.add(app.copyWith(status: AppInstallState.notInstalled));
-        } else {
-          final int installedCode = info.versionCode ?? 0;
-          if (installedCode < app.versionCode) {
-            updated.add(app.copyWith(
-              status: AppInstallState.updateAvailable,
-              installedVersion: info.versionName,
-            ));
+    try {
+      // 1. Fetch releases from your shared GitHub repository
+      final dio = Dio();
+      final response = await dio.get(
+        'https://api.github.com/repos/$_githubRepo/releases?per_page=30',
+        options: Options(headers: {'Accept': 'application/vnd.github.v3+json'}),
+      );
+
+      final List<dynamic> releases = response.data is List ? response.data : [];
+
+      // 2. Check Launcher Self-Update (tags starting with 'v' like v0.0.1, v0.0.2)
+      await _checkLauncherSelfUpdate(releases);
+
+      // 3. Check App Updates from the releases list
+      final List<CraftApp> updatedApps = [];
+
+      for (final app in state.apps) {
+        CraftApp currentApp = app;
+
+        // Find the newest release matching this app's tagPrefix (e.g., 'musicv')
+        final matchingReleases = releases.where((r) {
+          final tag = (r['tag_name'] as String? ?? '').toLowerCase();
+          return tag.startsWith(app.tagPrefix.toLowerCase());
+        }).toList();
+
+        if (matchingReleases.isNotEmpty) {
+          // Releases are sorted newest first by GitHub
+          final latestRelease = matchingReleases.first;
+          final remoteTag = latestRelease['tag_name'] as String? ?? '';
+          final remoteVersion = _extractVersionDigits(remoteTag);
+
+          // Find .apk in assets
+          String? downloadUrl;
+          final assets = latestRelease['assets'] as List<dynamic>? ?? [];
+          for (final asset in assets) {
+            final name = (asset['name'] as String? ?? '').toLowerCase();
+            if (name.endsWith('.apk')) {
+              downloadUrl = asset['browser_download_url'] as String?;
+              break;
+            }
+          }
+
+          currentApp = currentApp.copyWith(
+            version: remoteTag,
+            apkDownloadUrl: downloadUrl ?? currentApp.apkDownloadUrl,
+          );
+
+          // Check device installation status
+          final AppInfo? info = await InstalledApps.getAppInfo(app.packageName);
+          if (info == null) {
+            currentApp = currentApp.copyWith(status: AppInstallState.notInstalled);
           } else {
-            updated.add(app.copyWith(
-              status: AppInstallState.upToDate,
-              installedVersion: info.versionName,
-            ));
+            final installedVersion = info.versionName ?? '0.0.0';
+            if (_isNewerVersion(installedVersion, remoteVersion)) {
+              currentApp = currentApp.copyWith(
+                status: AppInstallState.updateAvailable,
+                installedVersion: installedVersion,
+              );
+            } else {
+              currentApp = currentApp.copyWith(
+                status: AppInstallState.upToDate,
+                installedVersion: installedVersion,
+              );
+            }
+          }
+        } else {
+          // Fallback if no matching tag is found on GitHub yet
+          final AppInfo? info = await InstalledApps.getAppInfo(app.packageName);
+          currentApp = currentApp.copyWith(
+            status: info == null ? AppInstallState.notInstalled : AppInstallState.upToDate,
+            installedVersion: info?.versionName,
+          );
+        }
+
+        updatedApps.add(currentApp);
+      }
+
+      state = state.copyWith(apps: updatedApps, isLoading: false);
+    } catch (e) {
+      debugPrint('Error fetching updates from GitHub: $e');
+      state = state.copyWith(isLoading: false);
+    }
+  }
+
+  /// Processes releases for the Launcher itself (Tag starting with 'v', e.g. v0.0.1)
+  Future<void> _checkLauncherSelfUpdate(List<dynamic> releases) async {
+    try {
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      final String currentLauncherVersion = packageInfo.version; // from pubspec.yaml
+
+      // Launcher tags start with 'v' and DO NOT start with any app tag prefixes
+      final launcherReleases = releases.where((r) {
+        final tag = (r['tag_name'] as String? ?? '').toLowerCase();
+        final isAppTag = state.apps.any((a) => tag.startsWith(a.tagPrefix.toLowerCase()));
+        return !isAppTag && (tag.startsWith('v'));
+      }).toList();
+
+      if (launcherReleases.isNotEmpty) {
+        final latest = launcherReleases.first;
+        final remoteTag = latest['tag_name'] as String? ?? '';
+        final remoteVersion = _extractVersionDigits(remoteTag);
+
+        String? downloadUrl;
+        final assets = latest['assets'] as List<dynamic>? ?? [];
+        for (final asset in assets) {
+          final name = (asset['name'] as String? ?? '').toLowerCase();
+          if (name.endsWith('.apk')) {
+            downloadUrl = asset['browser_download_url'] as String?;
+            break;
           }
         }
-      } catch (_) {
-        // Fallback for emulator / permissions
-        updated.add(app);
-      }
-    }
 
-    state = state.copyWith(apps: updated, isLoading: false);
+        if (_isNewerVersion(currentLauncherVersion, remoteVersion) && downloadUrl != null) {
+          state = state.copyWith(
+            isSelfUpdateAvailable: true,
+            selfLatestVersion: remoteTag,
+            selfDownloadUrl: downloadUrl,
+          );
+        } else {
+          state = state.copyWith(isSelfUpdateAvailable: false);
+        }
+      }
+    } catch (e) {
+      debugPrint('Launcher self update check error: $e');
+    }
+  }
+
+  /// Extracts numbers from string (e.g. "musicv0.0.2" -> "0.0.2", "v.0.0.1" -> "0.0.1")
+  String _extractVersionDigits(String tag) {
+    final match = RegExp(r'(\d+(\.\d+)+)').firstMatch(tag);
+    return match != null ? match.group(0)! : '0.0.0';
+  }
+
+  /// Compares semantic versions (e.g. "0.0.1" vs "0.0.2")
+  bool _isNewerVersion(String current, String remote) {
+    try {
+      final cParts = _extractVersionDigits(current).split('.').map((e) => int.tryParse(e) ?? 0).toList();
+      final rParts = _extractVersionDigits(remote).split('.').map((e) => int.tryParse(e) ?? 0).toList();
+
+      final maxLen = cParts.length > rParts.length ? cParts.length : rParts.length;
+      for (int i = 0; i < maxLen; i++) {
+        final c = i < cParts.length ? cParts[i] : 0;
+        final r = i < rParts.length ? rParts[i] : 0;
+        if (r > c) return true;
+        if (r < c) return false;
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  /// Self-updates the Launcher app
+  Future<void> updateLauncher() async {
+    final url = state.selfDownloadUrl;
+    if (url == null || state.isSelfUpdating) return;
+
+    state = state.copyWith(isSelfUpdating: true, selfUpdateProgress: 0.05);
+
+    try {
+      final dir = await getTemporaryDirectory();
+      final filePath = "${dir.path}/alien_launcher_update.apk";
+
+      final dio = Dio();
+      await dio.download(
+        url,
+        filePath,
+        onReceiveProgress: (received, total) {
+          if (total != -1) {
+            state = state.copyWith(selfUpdateProgress: received / total);
+          }
+        },
+      );
+
+      state = state.copyWith(isSelfUpdating: false, selfUpdateProgress: 1.0);
+      await OpenFilex.open(filePath);
+    } catch (e) {
+      debugPrint('Error updating launcher: $e');
+      state = state.copyWith(isSelfUpdating: false, selfUpdateProgress: 0.0);
+    }
   }
 
   void setSearch(String query) => state = state.copyWith(searchQuery: query);
@@ -144,7 +277,10 @@ class StoreNotifier extends StateNotifier<StoreState> {
     InstalledApps.startApp(packageName);
   }
 
+  /// Downloads and triggers installation of any app (e.g. music_)
   Future<void> downloadAndInstall(CraftApp app) async {
+    if (app.apkDownloadUrl.isEmpty) return;
+
     _updateAppInState(app.id, (a) => a.copyWith(isDownloading: true, downloadProgress: 0.05));
 
     try {
@@ -164,7 +300,6 @@ class StoreNotifier extends StateNotifier<StoreState> {
       );
 
       _updateAppInState(app.id, (a) => a.copyWith(isDownloading: false, downloadProgress: 1.0));
-      // await InstallPlugin.installApk(filePath, appId: 'com.example.alien_launcher');
       await OpenFilex.open(filePath);
       await refreshInstalledStatus();
     } catch (e) {

@@ -17,7 +17,6 @@ void main() {
   runApp(const ProviderScope(child: AlienLauncherApp()));
 }
 
-// 1. App Title
 class AlienLauncherApp extends StatelessWidget {
   const AlienLauncherApp({super.key});
 
@@ -68,7 +67,7 @@ class StoreHomeScreen extends ConsumerWidget {
               child: Row(
                 children: [
                   const Text(
-                    'ALIEN',                    // <-- Changed from ARTCRAFT
+                    'ALIEN',
                     style: TextStyle(
                       fontFamily: AppFonts.title,
                       fontSize: 18,
@@ -79,7 +78,7 @@ class StoreHomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: 14),
                   const Text(
-                    'APP LAUNCHER',             // <-- Changed from CRAFT APP SUITE
+                    'APP LAUNCHER',
                     style: TextStyle(
                       fontFamily: AppFonts.digital,
                       fontSize: 11,
@@ -88,6 +87,42 @@ class StoreHomeScreen extends ConsumerWidget {
                     ),
                   ),
                   const Spacer(),
+
+                  // ================== SELF UPDATE BUTTON ==================
+                  if (state.isSelfUpdateAvailable) ...[
+                    InkWell(
+                      onTap: notifier.updateLauncher,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.amber.withOpacity(0.12),
+                          border: Border.all(color: Colors.amberAccent, width: 1.2),
+                        ),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.system_update_alt_rounded,
+                              size: 13,
+                              color: Colors.amberAccent,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              'UPDATE v${state.selfLatestVersion ?? ''}',
+                              style: const TextStyle(
+                                fontFamily: AppFonts.digital,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.amberAccent,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
+
                   IconButton(
                     icon: const Icon(Icons.settings_outlined, color: AppColors.textMuted, size: 20),
                     onPressed: () {},
@@ -101,7 +136,6 @@ class StoreHomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
               child: Row(
                 children: [
-                  // Refresh button
                   InkWell(
                     onTap: notifier.refreshInstalledStatus,
                     child: Container(
@@ -119,8 +153,6 @@ class StoreHomeScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-
-                  // Search Field
                   Expanded(
                     child: SizedBox(
                       height: 42,
@@ -142,12 +174,12 @@ class StoreHomeScreen extends ConsumerWidget {
                           filled: true,
                           fillColor: AppColors.cardBg,
                           contentPadding: EdgeInsets.zero,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: AppColors.borderLight, width: 1.2),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.borderLight, width: 1.2),
                             borderRadius: BorderRadius.zero,
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: AppColors.badgeText, width: 1.2),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.badgeText, width: 1.2),
                             borderRadius: BorderRadius.zero,
                           ),
                         ),
@@ -163,7 +195,6 @@ class StoreHomeScreen extends ConsumerWidget {
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 children: [
-                  // Installed Section
                   for (final app in installedApps)
                     AppCard(
                       app: app,
@@ -171,8 +202,6 @@ class StoreHomeScreen extends ConsumerWidget {
                           ? notifier.openApp(app.packageName)
                           : notifier.downloadAndInstall(app),
                     ),
-
-                  // "NOT INSTALLED" Section Divider (From Screenshot)
                   if (notInstalledApps.isNotEmpty) ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -214,8 +243,8 @@ class StoreHomeScreen extends ConsumerWidget {
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   Text(
-                    'CHECKED 2 MIN AGO • USING ALIEN API AND GITHUB', // <-- Changed
+                  Text(
+                    'CHECKED 2 MIN AGO • USING ALIEN API AND GITHUB',
                     style: TextStyle(
                       fontFamily: AppFonts.digital,
                       fontSize: 9,

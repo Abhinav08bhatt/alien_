@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-enum AppInstallState { notInstalled, upToDate, updateAvailable }
+enum AppInstallState {
+  notInstalled,
+  updateAvailable,
+  upToDate,
+}
 
 class CraftApp {
   final String id;
   final String packageName;
   final String name;
-  final String publisher;
   final String tagLine;
   final String description;
   final String version;
@@ -15,19 +18,18 @@ class CraftApp {
   final String githubUrl;
   final String apkDownloadUrl;
   final Color accentColor;
-  final IconData icon;
+  final String icon;
+  final String tagPrefix; // e.g., 'musicv' for music app
 
-  // Local state
   final AppInstallState status;
   final String? installedVersion;
-  final double downloadProgress;
   final bool isDownloading;
+  final double downloadProgress;
 
   const CraftApp({
     required this.id,
     required this.packageName,
     required this.name,
-    this.publisher = 'BY ALIEN',
     required this.tagLine,
     required this.description,
     required this.version,
@@ -37,36 +39,50 @@ class CraftApp {
     required this.apkDownloadUrl,
     required this.accentColor,
     required this.icon,
+    required this.tagPrefix,
     this.status = AppInstallState.notInstalled,
     this.installedVersion,
-    this.downloadProgress = 0.0,
     this.isDownloading = false,
+    this.downloadProgress = 0.0,
   });
 
   CraftApp copyWith({
+    String? id,
+    String? packageName,
+    String? name,
+    String? tagLine,
+    String? description,
+    String? version,
+    int? versionCode,
+    String? lastUpdated,
+    String? githubUrl,
+    String? apkDownloadUrl,
+    Color? accentColor,
+    String? icon,
+    String? tagPrefix,
     AppInstallState? status,
     String? installedVersion,
-    double? downloadProgress,
     bool? isDownloading,
+    double? downloadProgress,
   }) {
     return CraftApp(
-      id: id,
-      packageName: packageName,
-      name: name,
-      publisher: publisher,
-      tagLine: tagLine,
-      description: description,
-      version: version,
-      versionCode: versionCode,
-      lastUpdated: lastUpdated,
-      githubUrl: githubUrl,
-      apkDownloadUrl: apkDownloadUrl,
-      accentColor: accentColor,
-      icon: icon,
+      id: id ?? this.id,
+      packageName: packageName ?? this.packageName,
+      name: name ?? this.name,
+      tagLine: tagLine ?? this.tagLine,
+      description: description ?? this.description,
+      version: version ?? this.version,
+      versionCode: versionCode ?? this.versionCode,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+      githubUrl: githubUrl ?? this.githubUrl,
+      apkDownloadUrl: apkDownloadUrl ?? this.apkDownloadUrl,
+      accentColor: accentColor ?? this.accentColor,
+      icon: icon ?? this.icon,
+      tagPrefix: tagPrefix ?? this.tagPrefix,
       status: status ?? this.status,
       installedVersion: installedVersion ?? this.installedVersion,
-      downloadProgress: downloadProgress ?? this.downloadProgress,
       isDownloading: isDownloading ?? this.isDownloading,
+      downloadProgress: downloadProgress ?? this.downloadProgress,
     );
   }
 }
