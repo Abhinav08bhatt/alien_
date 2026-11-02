@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:install_plugin/install_plugin.dart';
+// import 'package:install_plugin/install_plugin.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:path_provider/path_provider.dart';
@@ -48,60 +49,60 @@ class StoreNotifier extends StateNotifier<StoreState> {
   static final List<CraftApp> _initialData = [
     const CraftApp(
       id: 'music',
-      packageName: 'com.artcraft.music',
+      packageName: 'com.alien.music_',
       name: 'SoundCraft',
       tagLine: 'Recording, editing and mixing audio',
       description: 'Record, edit and mix your audio. Built for speed and custom workflow.',
       version: 'V0.16.0',
       versionCode: 16,
       lastUpdated: 'Nov 2, 2026',
-      githubUrl: 'https://github.com',
-      apkDownloadUrl: 'https://github.com',
-      accentColor: Color(0xFF00E676),
+      githubUrl: 'https://github.com/Abhinav08bhatt/alien_',
+      apkDownloadUrl: 'https://github.com/Abhinav08bhatt/alien_/releases/download/v0.0.1/music_.apk',
+      accentColor: Color(0xFF0095FF),
       icon: Icons.graphic_eq_rounded,
     ),
-    const CraftApp(
-      id: 'movie',
-      packageName: 'com.artcraft.movies',
-      name: 'FilmCraft',
-      tagLine: 'Video curation, color and sound',
-      description: 'Professional video editing and movie recommendation system.',
-      version: 'V0.20.0',
-      versionCode: 20,
-      lastUpdated: 'Nov 2, 2026',
-      githubUrl: 'https://github.com',
-      apkDownloadUrl: 'https://github.com',
-      accentColor: Color(0xFFFF4081),
-      icon: Icons.movie_creation_outlined,
-    ),
-    const CraftApp(
-      id: 'design',
-      packageName: 'com.artcraft.design',
-      name: 'DesignCraft',
-      tagLine: 'Page layout and publishing',
-      description: 'Layout your ideas, print ready posters and graphic suites.',
-      version: 'V0.16.0',
-      versionCode: 16,
-      lastUpdated: 'Nov 2, 2026',
-      githubUrl: 'https://github.com',
-      accentColor: Color(0xFF69F0AE),
-      icon: Icons.auto_awesome_mosaic_outlined,
-      apkDownloadUrl: 'https://github.com',
-    ),
-    const CraftApp(
-      id: 'light',
-      packageName: 'com.artcraft.photo',
-      name: 'LightCraft',
-      tagLine: 'Photo library and raw development',
-      description: 'Your photos. Your pixels. Your machine. Zero cloud dependency.',
-      version: 'V0.17.0',
-      versionCode: 17,
-      lastUpdated: 'Nov 2, 2026',
-      githubUrl: 'https://github.com',
-      accentColor: Color(0xFFFFAB00),
-      icon: Icons.photo_filter_rounded,
-      apkDownloadUrl: 'https://github.com',
-    ),
+  //   const CraftApp(
+  //     id: 'movie',
+  //     packageName: 'com.artcraft.movies',
+  //     name: 'FilmCraft',
+  //     tagLine: 'Video curation, color and sound',
+  //     description: 'Professional video editing and movie recommendation system.',
+  //     version: 'V0.20.0',
+  //     versionCode: 20,
+  //     lastUpdated: 'Nov 2, 2026',
+  //     githubUrl: 'https://github.com',
+  //     apkDownloadUrl: 'https://github.com',
+  //     accentColor: Color(0xFFFF4081),
+  //     icon: Icons.movie_creation_outlined,
+  //   ),
+  //   const CraftApp(
+  //     id: 'design',
+  //     packageName: 'com.artcraft.design',
+  //     name: 'DesignCraft',
+  //     tagLine: 'Page layout and publishing',
+  //     description: 'Layout your ideas, print ready posters and graphic suites.',
+  //     version: 'V0.16.0',
+  //     versionCode: 16,
+  //     lastUpdated: 'Nov 2, 2026',
+  //     githubUrl: 'https://github.com',
+  //     accentColor: Color(0xFF69F0AE),
+  //     icon: Icons.auto_awesome_mosaic_outlined,
+  //     apkDownloadUrl: 'https://github.com',
+  //   ),
+  //   const CraftApp(
+  //     id: 'light',
+  //     packageName: 'com.artcraft.photo',
+  //     name: 'LightCraft',
+  //     tagLine: 'Photo library and raw development',
+  //     description: 'Your photos. Your pixels. Your machine. Zero cloud dependency.',
+  //     version: 'V0.17.0',
+  //     versionCode: 17,
+  //     lastUpdated: 'Nov 2, 2026',
+  //     githubUrl: 'https://github.com',
+  //     accentColor: Color(0xFFFFAB00),
+  //     icon: Icons.photo_filter_rounded,
+  //     apkDownloadUrl: 'https://github.com',
+  //   ),
   ];
 
   Future<void> refreshInstalledStatus() async {
@@ -163,7 +164,8 @@ class StoreNotifier extends StateNotifier<StoreState> {
       );
 
       _updateAppInState(app.id, (a) => a.copyWith(isDownloading: false, downloadProgress: 1.0));
-      await InstallPlugin.installApk(filePath, appId: 'com.example.alien_launcher');
+      // await InstallPlugin.installApk(filePath, appId: 'com.example.alien_launcher');
+      await OpenFilex.open(filePath);
       await refreshInstalledStatus();
     } catch (e) {
       _updateAppInState(app.id, (a) => a.copyWith(isDownloading: false, downloadProgress: 0.0));

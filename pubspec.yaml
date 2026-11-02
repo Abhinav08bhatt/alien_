@@ -13,7 +13,8 @@ dependencies:
   dio: ^5.4.1
   path_provider: ^2.1.2
   installed_apps: ^2.2.1
-  install_plugin: ^2.1.0
+  # install_plugin: ^2.1.0
+  open_filex: ^4.5.0
   url_launcher: ^6.3.0
 
 dev_dependencies:
@@ -31,15 +32,18 @@ flutter:
   fonts:
     - family: Jost
       fonts:
-        - asset: assets/fonts/Jost-Regular.ttf
-        - asset: assets/fonts/Jost-Medium.ttf
+        - asset: assets/fonts/Jost/static/Jost-Regular.ttf
+        - asset: assets/fonts/Jost/static/Jost-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Jost-Bold.ttf
+        - asset: assets/fonts/Jost/static/Jost-Bold.ttf
           weight: 700
+
     - family: Gideon_Roman
       fonts:
-        - asset: assets/fonts/Gideon_Roman.ttf
+        - asset: assets/fonts/Gideon_Roman/GideonRoman-Regular.ttf
+
     - family: Bitcount_Prop_Single
       fonts:
-        - asset: assets/fonts/Bitcount_Prop_Single.ttf
-
+        - asset: assets/fonts/Bitcount_Prop_Single/static/BitcountPropSingle-Regular.ttf
+        - asset: assets/fonts/Bitcount_Prop_Single/static/BitcountPropSingle-Bold.ttf
+          weight: 700
