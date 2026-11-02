@@ -72,19 +72,16 @@ class AppCard extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(7),
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0), // Inset padding for the icon
-                    child: Image.asset(
-                      app.icon,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.apps_rounded,
-                          color: app.accentColor,
-                          size: 28,
-                        );
-                      },
-                    ),
+                  child: Image.asset(
+                    app.icon,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.apps_rounded,
+                        color: app.accentColor,
+                        size: 28,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -113,7 +110,7 @@ class AppCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(3),
                           ),
                           child: const Text(
-                            "By Alien_",
+                            "By alien_",
                             style: TextStyle(
                               fontFamily: AppFonts.digital,
                               fontSize: 9,

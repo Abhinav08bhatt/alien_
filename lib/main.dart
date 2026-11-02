@@ -66,24 +66,29 @@ class StoreHomeScreen extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  const Text(
-                    'ALIEN',
-                    style: TextStyle(
-                      fontFamily: AppFonts.title,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 2.0,
+                  // Icon Image replacing "ALIEN"
+                  Image.asset(
+                    'assets/icons/alien_icon.png',
+                    width: 24,
+                    height: 24,
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => const Icon(
+                      Icons.smart_toy_outlined,
+                      size: 24,
                       color: AppColors.textMain,
                     ),
                   ),
-                  const SizedBox(width: 14),
+                  const SizedBox(width: 10),
+
+                  // "alien_" replacing "APP LAUNCHER"
                   const Text(
-                    'APP LAUNCHER',
+                    'alien_',
                     style: TextStyle(
-                      fontFamily: AppFonts.digital,
-                      fontSize: 11,
+                      fontFamily: AppFonts.title,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
                       letterSpacing: 1.5,
-                      color: AppColors.textMuted,
+                      color: AppColors.textMain,
                     ),
                   ),
                   const Spacer(),
