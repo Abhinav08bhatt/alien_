@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "id": "track",
+      "name": "track_",
+      "description": "Personal tracker",
+      "logo": "logos/logo_track_.png",
+      "package": "com.alien.track",
+      "tagPrefix": "track",
+      "accent": "#FBBF24",
+      "author": "alien"
+    }
+  ]
+}
