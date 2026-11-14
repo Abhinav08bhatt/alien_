@@ -9,6 +9,16 @@
       "tagPrefix": "track",
       "accent": "#FBBF24",
       "author": "alien"
+    },
+    {
+      "id": "music",
+      "name": "music_",
+      "description": "Local music player",
+      "logo": "logos/logo_music_.png",
+      "package": "com.alien.music",
+      "tagPrefix": "music",
+      "accent": "#FFFFFF",
+      "author": "alien"
     }
   ]
 }
