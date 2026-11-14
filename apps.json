@@ -7,7 +7,7 @@
       "logo": "logos/logo_track_.png",
       "package": "com.alien.track",
       "tagPrefix": "track",
-      "accent": "#FBBF24",
+      "accent": "#8B5CF6",
       "author": "alien"
     },
     {
@@ -17,7 +17,7 @@
       "logo": "logos/logo_music_.png",
       "package": "com.alien.music",
       "tagPrefix": "music",
-      "accent": "#FFFFFF",
+      "accent": "#0095FF",
       "author": "alien"
     }
   ]
