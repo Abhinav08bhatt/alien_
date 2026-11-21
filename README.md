@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/YOUR_USERNAME/alien_/releases/download/latest/alien.apk">
+  <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/v0.0.6/alien_.apk">
     <img src="https://img.shields.io/badge/DOWNLOAD-alien__-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download alien_" />
   </a>
 </p>
@@ -57,25 +57,22 @@ From now on, open alien_ whenever you want to update something.
     <td align="center" valign="top" width="33%">
       <img src="logos/logo_music_.png" width="80" alt="music_" /><br/>
       <b>music_</b><br/>
-      <sub>Local music player</sub><br/><br/>
-      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/latest/music_.apk">
+      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/musicv0.1.2/music_.apk">
         <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download music_" />
       </a>
     </td>
     <td align="center" valign="top" width="33%">
       <img src="logos/logo_track_.png" width="80" alt="track_" /><br/>
       <b>track_</b><br/>
-      <sub>Personal tracker</sub><br/><br/>
-      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/latest/track_.apk">
+      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/trackv0.1.3/track_.apk">
         <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download track_" />
       </a>
     </td>
     <td align="center" valign="top" width="33%">
       <img src="logos/logo_poker_.png" width="80" alt="movie_" /><br/>
-      <b>movie_</b><br/>
-      <sub>Poker game with multiple modes</sub><br/><br/>
-      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/latest/poker_.apk">
-        <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download movie_" />
+      <b>poker_</b><br/>
+      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/pokerv0.0.1/poker_.apk">
+        <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download poker_" />
       </a>
     </td>
   </tr>
