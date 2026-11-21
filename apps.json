@@ -19,6 +19,16 @@
       "tagPrefix": "music",
       "accent": "#0095FF",
       "author": "alien"
+    },
+    {
+      "id": "poker",
+      "name": "poker_",
+      "description": "Poker game modes",
+      "logo": "logos/logo_poker_.png",
+      "package": "com.alien.poker",
+      "tagPrefix": "poker",
+      "accent": "#14F195",
+      "author": "alien"
     }
   ]
 }
