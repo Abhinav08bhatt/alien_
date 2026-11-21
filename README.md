@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logos/alien.png" alt="alien_" width="120" />
+  <img src="logos/logo_alien_.png" alt="alien_" width="120" />
 </p>
 
 <h1 align="center">alien_</h1>
@@ -55,26 +55,26 @@ From now on, open alien_ whenever you want to update something.
 <table>
   <tr>
     <td align="center" valign="top" width="33%">
-      <img src="logos/music.png" width="80" alt="music_" /><br/>
+      <img src="logos/logo_music_.png" width="80" alt="music_" /><br/>
       <b>music_</b><br/>
       <sub>Local music player</sub><br/><br/>
-      <a href="https://github.com/YOUR_USERNAME/alien_/releases/download/latest/music.apk">
+      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/latest/music_.apk">
         <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download music_" />
       </a>
     </td>
     <td align="center" valign="top" width="33%">
-      <img src="logos/track.png" width="80" alt="track_" /><br/>
+      <img src="logos/logo_track_.png" width="80" alt="track_" /><br/>
       <b>track_</b><br/>
       <sub>Personal tracker</sub><br/><br/>
-      <a href="https://github.com/YOUR_USERNAME/alien_/releases/download/latest/track.apk">
+      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/latest/track_.apk">
         <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download track_" />
       </a>
     </td>
     <td align="center" valign="top" width="33%">
-      <img src="logos/movie.png" width="80" alt="movie_" /><br/>
+      <img src="logos/logo_poker_.png" width="80" alt="movie_" /><br/>
       <b>movie_</b><br/>
-      <sub>Track and discover movies</sub><br/><br/>
-      <a href="https://github.com/YOUR_USERNAME/alien_/releases/download/latest/movie.apk">
+      <sub>Poker game with multiple modes</sub><br/><br/>
+      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/latest/poker_.apk">
         <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download movie_" />
       </a>
     </td>
@@ -131,44 +131,3 @@ Android 7.0 or newer on a 64-bit ARM phone, which covers almost every phone sold
 No. alien_ only reads this repository (the app list and releases) from GitHub and checks which of my apps are installed on your phone.
 
 ---
-
-<details>
-<summary><b>For me: how releases work</b></summary>
-
-<br/>
-
-**Each version is a GitHub Release with this tag format:**
-
-| App | Tag | Example |
-|---|---|---|
-| alien_ | `v` + version | `v0.0.5` |
-| music_ | `music` + `v` + version | `musicv0.0.2` |
-| track_ | `track` + `v` + version | `trackv0.1.0` |
-
-The tag is the left part of `pubspec.yaml`'s version (`0.0.2+2` → `0.0.2`). The APK must be attached.
-alien_ reads these releases to know what is newest.
-
-**The `latest` release is only for the download buttons.** It holds one fixed-name copy of the newest APK of each app
-(`alien.apk`, `music.apk`, …), so the buttons in this README never need editing. alien_ ignores it.
-
-Create it once:
-```
-gh release create latest --repo YOUR_USERNAME/alien_ --prerelease \
-  --title "Latest downloads" --notes "Newest APK of every app. Don't delete."
-```
-After each normal release, refresh its copy:
-```
-cp build/app/outputs/flutter-apk/app-release.apk music.apk
-gh release upload latest music.apk --repo YOUR_USERNAME/alien_ --clobber
-```
-
-**Adding an app:** put `logos/<id>.png` in this repo, add an entry to `apps.json`, publish its first release,
-and add a cell to the table above.
-
-</details>
-
----
-
-<p align="center">
-  <sub>Made by alien · the source code is private, the apps are free</sub>
-</p>
