@@ -21,12 +21,12 @@
       "author": "alien"
     },
     {
-      "id": "poker",
-      "name": "poker_",
+      "id": "casino",
+      "name": "casino_",
       "description": "Poker game modes",
-      "logo": "logos/logo_poker_.png",
-      "package": "com.alien.poker",
-      "tagPrefix": "poker",
+      "logo": "logos/logo_casino_.png",
+      "package": "com.alien.casino",
+      "tagPrefix": "casino",
       "accent": "#14F195",
       "author": "alien"
     }
