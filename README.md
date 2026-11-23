@@ -71,7 +71,7 @@ From now on, open alien_ whenever you want to update something.
     <td align="center" valign="top" width="33%">
       <img src="logos/logo_casino_.png" width="80" alt="casino_" /><br/>
       <b>poker_</b><br/>
-      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/casinov0.0.1/casino_.apk">
+      <a href="https://github.com/Abhinav08bhatt/alien_/releases/download/casinov0.0.2/casino_.apk">
         <img src="https://img.shields.io/badge/DOWNLOAD-APK-B9F23A?style=for-the-badge&logo=android&logoColor=black" alt="Download casino_" />
       </a>
     </td>
